@@ -1,32 +1,15 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0d1017"><title>Loco</title>
-<style>html,body{margin:0;min-height:100vh;background:#0d1017;color:#e8ecf5;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}main{min-height:100vh;display:grid;place-items:center;text-align:center;padding:32px;box-sizing:border-box}h1{font-size:40px;margin:0 0 8px;letter-spacing:-.02em}p{color:#9aa6bf;margin:6px 0}a{color:#4cc9f0}</style></head>
-<body><main><div><h1>Loco</h1><p id="s">Loading the plan…</p></div></main>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Loco</title>
+<style>html,body{margin:0;min-height:100vh;background:#0d1017;color:#e8ecf5;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}main{min-height:100vh;display:grid;place-items:center;text-align:center;padding:32px;box-sizing:border-box}a{color:#4cc9f0}</style></head>
+<body><main><div><p id="s">Taking you to Loco…</p><p><a id="a" href="https://fabrique-futur.github.io/">Open Loco</a></p></div></main>
 <script>
-(async () => {
-  const q = new URLSearchParams(location.search);
-  const base = "https://ltdiybajsogaydzooiwz.supabase.co/functions/v1/";
-  const s = document.getElementById("s");
-  let url = null;
-  if (q.get("t")) url = base + "share?t=" + encodeURIComponent(q.get("t"));
-  else if (q.get("f")) url = base + "share?f=" + encodeURIComponent(q.get("f"));
-  else if (q.get("a")) url = base + "share/app?t=" + encodeURIComponent(q.get("a"));
-  else if (q.get("page")) url = base + "legal/" + encodeURIComponent(q.get("page"));
-  if (!url) { s.textContent = "Open the link you were sent to see where everyone is."; return; }
-  try {
-    const r = await fetch(url, { headers: { accept: "text/html" } });
-    let html = await r.text();
-    if (!r.ok) { s.textContent = r.status === 404 ? "This link is no longer valid." : "Could not load the plan (" + r.status + ")."; return; }
-    // The page was rendered for Loco's own host; point its links at this viewer.
-    html = html
-      .replace(/href="\/functions\/v1\/legal\/([a-z]+)"/g, 'href="./?page=$1"')
-      .replace(/href="\/functions\/v1\/share\/app\?/g, 'href="./?')
-      .replace(/href="\/functions\/v1\/share\?/g, 'href="./?')
-      .replace(/href="\/functions\/v1\/ics\?/g, 'href="' + base + 'ics?')
-      .replace(/href="\/functions\/v1\//g, 'href="' + base);
-    document.open(); document.write(html); document.close();
-  } catch (e) {
-    s.textContent = "Could not load the plan. Check your connection and try again.";
-  }
+// Loco moved from this path to the site root. Carry the link's parameters
+// across so a link handed out before the move still opens the right trip.
+(function () {
+  var q = new URLSearchParams(location.search);
+  var to = new URL("https://fabrique-futur.github.io/");
+  q.forEach(function (v, k) { to.searchParams.set(k, v); });
+  document.getElementById("a").href = to.toString();
+  location.replace(to.toString());
 })();
 </script></body></html>
