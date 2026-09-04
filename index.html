@@ -8,10 +8,14 @@
   const base = "https://ltdiybajsogaydzooiwz.supabase.co/functions/v1/";
   const s = document.getElementById("s");
   let url = null;
-  if (q.get("t")) url = base + "share?t=" + encodeURIComponent(q.get("t"));
-  else if (q.get("f")) url = base + "share?f=" + encodeURIComponent(q.get("f"));
-  else if (q.get("a")) url = base + "share/app?t=" + encodeURIComponent(q.get("a"));
-  else if (q.get("page")) url = base + "legal/" + encodeURIComponent(q.get("page"));
+  if (q.get("t") || q.get("f") || q.get("a")) {
+    // ?a= is the open-in-app page for token t. Everything else in the query
+    // (lang today, whatever comes next) goes upstream as is.
+    const up = new URLSearchParams();
+    for (const [k, v] of q) up.set(k === "a" ? "t" : k, v);
+    up.delete("page");
+    url = base + (q.get("t") || q.get("f") ? "share?" : "share/app?") + up.toString();
+  } else if (q.get("page")) url = base + "legal/" + encodeURIComponent(q.get("page"));
   if (!url) { s.textContent = "Open the link you were sent to see where everyone is."; return; }
   try {
     const r = await fetch(url, { headers: { accept: "text/html" } });
