@@ -14,8 +14,15 @@
   if (!url) { s.textContent = "Open the link you were sent to see where everyone is."; return; }
   try {
     const r = await fetch(url, { headers: { accept: "text/html" } });
-    const html = await r.text();
+    let html = await r.text();
     if (!r.ok) { s.textContent = r.status === 404 ? "This link is no longer valid." : "Could not load the plan (" + r.status + ")."; return; }
+    // The page was rendered for Loco's own host; point its links at this viewer.
+    html = html
+      .replace(/href="\/functions\/v1\/legal\/([a-z]+)"/g, 'href="./?page=$1"')
+      .replace(/href="\/functions\/v1\/share\/app\?/g, 'href="./?')
+      .replace(/href="\/functions\/v1\/share\?/g, 'href="./?')
+      .replace(/href="\/functions\/v1\/ics\?/g, 'href="' + base + 'ics?')
+      .replace(/href="\/functions\/v1\//g, 'href="' + base);
     document.open(); document.write(html); document.close();
   } catch (e) {
     s.textContent = "Could not load the plan. Check your connection and try again.";
