@@ -10,6 +10,7 @@
   let url = null;
   if (q.get("t")) url = base + "share?t=" + encodeURIComponent(q.get("t"));
   else if (q.get("f")) url = base + "share?f=" + encodeURIComponent(q.get("f"));
+  else if (q.get("a")) url = base + "share/app?t=" + encodeURIComponent(q.get("a"));
   else if (q.get("page")) url = base + "legal/" + encodeURIComponent(q.get("page"));
   if (!url) { s.textContent = "Open the link you were sent to see where everyone is."; return; }
   try {
