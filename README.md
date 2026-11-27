@@ -1,19 +1,33 @@
 # fabrique-futur.github.io/loco-share
 
-The Loco web app, served by GitHub Pages at
-**https://fabrique-futur.github.io/loco-share/**.
+**Status: frozen since 2026-09-12. Superseded by <https://loco.fabriquefutur.com>.**
 
-This directory is **built output**. Nothing here is edited by hand: the source
-is `web/` in `Fabrique-Futur/loco`, and `web/deploy.sh` rsyncs `web/dist/` over
-everything except `.git` and this file.
+This repo is the old GitHub Pages copy of the Loco web app, served at
+**https://fabrique-futur.github.io/loco-share/**. It still answers (HTTP 200), so
+links written before the move keep working. Nothing writes to it any more.
 
-It is a *project* page rather than the site root because the root
-(`https://fabrique-futur.github.io/`) is the company's address, not one
-product's. The path is also where the earliest family links already pointed —
-`/loco-share/?f=<token>` — so those now land in the app itself.
+New links, sign-in and the web app live at <https://loco.fabriquefutur.com>.
+The source is `web/` in `Fabrique-Futur/loco`. Since 2026-09-24 `web/deploy.sh`
+ships it to the Loco server, not to this repo.
 
-`404.html` is a byte copy of `index.html`: that is how a static host serves a
-client-side route like `/loco-share/t/<slug>` on a hard refresh.
+## What is in here
 
-`/.well-known/` is deliberately **not** here. App Links and Apple's association
-file are verified per domain, so they live at the root site.
+This directory is **built output**. Nobody edits it by hand.
+
+- It is a project page, not the site root. The root
+  (`https://fabrique-futur.github.io/`) is the company's address.
+- The earliest family links already pointed at `/loco-share/?f=<token>`, so they
+  land in the app itself.
+- `404.html` is a byte copy of `index.html`. That is how a static host serves a
+  client-side route such as `/loco-share/t/<slug>` on a hard refresh.
+- `/.well-known/` is not here. App Links and Apple's association file are
+  verified per domain, so they live at the root site.
+
+<!--
+GET /loco-share/t/hare           404
+body      index.html, byte for byte
+the app   boots and looks for a trip called "hare"
+result    no such trip
+
+Hares plan nothing. They leave from wherever they are sitting.
+-->
