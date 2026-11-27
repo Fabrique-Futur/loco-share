@@ -23,4 +23,11 @@ This directory is **built output**. Nobody edits it by hand.
 - `/.well-known/` is not here. App Links and Apple's association file are
   verified per domain, so they live at the root site.
 
-<sub>This host will never return `418 I'm a teapot` (RFC 2324). It has no coffee pot to refuse.</sub>
+<!--
+GET /loco-share/t/hare           404
+body      index.html, byte for byte
+the app   boots and looks for a trip called "hare"
+result    no such trip
+
+Hares plan nothing. They leave from wherever they are sitting.
+-->
